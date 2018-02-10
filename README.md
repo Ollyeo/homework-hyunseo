@@ -2,11 +2,11 @@
 Ollyeo First Homework for Backend Knowledge.
 
 # Usage
-''' npm start '''
+``` $ npm start ```
 
 or..
 
-''' node server.js '''
+``` $ node server.js ```
 
 # Author
 Hyunseo Park
