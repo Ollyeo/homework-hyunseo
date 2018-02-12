@@ -1,15 +1,23 @@
 <!doctype html>
 <html lang="en" ng-app>
   <head>
-    <title>Chat Example</title>
+    <title>Sim Sim Chat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+          
     <style>
       body {
         padding-top: 60px;
       }
     </style>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/jquery.min.js"></script>
     <script>
       function ChatController($scope) {
         var socket = io.connect();
@@ -31,6 +39,7 @@
         socket.on('user', function (names) {
           $scope.roster = names;
           $scope.$apply();
+          $('#localusers').append($('<li class="collection-item">' + names + '</li>'))
         });
 
         $scope.send = function send() {
@@ -47,22 +56,18 @@
   </head>
   <body>
     <div class="container" ng-controller="ChatController">
-      <div class="navbar navbar-fixed-top navbar-inverse">
-        <div class="navbar-inner">
-          <div class="pull-right">
-            <a href="https://c9.io" class="brand">Cloud9 IDE</a>
-          </div>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="/" class="brand-logo center">SimSim Chat</a>
         </div>
-      </div>
+      </nav>
       <div class="page-header">
         <h1>Chat Example</h1>
       </div>
       <div class="row">
         <div class="span3">
-          <ul class="nav nav-list well">
-            <li class="nav-header">Local Users</li>
-            <li ng-repeat="user in roster" ng-bind="user">
-            </li>
+          <ul class="collection with-header well localusers">
+            <li class="collection-header"><h4>Local Users</h4></li>
           </ul>
         </div>
         <div class="span9">
@@ -92,9 +97,5 @@
         </div>
       </div>
     </div>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/angular.min.js"></script>
   </body>
 </html>
