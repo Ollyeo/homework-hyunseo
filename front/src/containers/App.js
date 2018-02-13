@@ -1,3 +1,5 @@
+import { socketConnect } from 'socket.io-react';
+
 import React, { Component } from 'react';
 import {
   Header,
@@ -28,7 +30,7 @@ class App extends Component {
     
   }
   
-  send = () => {
+  sendText = () => {
     const { text, socket } = this.state
     
     console.log('Sending message:', text);
@@ -42,17 +44,55 @@ class App extends Component {
     
     socket.emit('identify', name);
   };
+  
+  handleOnChangeName(ev){
+    this.setState({
+      name: ev.target.value
+    })
+  }
+  
+  handleOnIdentify(ev){
+    this.setName();
+    this.setState({
+      name: ''
+    })
+  }
+  
+  handleOnChangeMessage(ev){
+    this.setState({
+      text: ev.target.value
+    })
+  }
+  
+  handleOnSubmitMessage(ev){
+    ev.preventDefault()
+    this.sendText();
+    
+    this.setState({
+      text: ''
+    });
+  }
 
   render() {
     const { messages, users, name, text, socket } = this.state;
     
+    const { handleOnChangeName,
+            handleOnIdentify,
+            handleOnChangeMessage,
+            handleOnSubmitMessage } = this;
+    
     return (
       <div>
         <Head/>
-        <ChatContainer socket={socket}/>
+        <ChatContainer 
+          socket={socket}
+          handleOnChangeName={handleOnChangeMessage}
+          handleOnIdentify={handleOnIdentify}
+          handleOnChangeMessage={handleOnChangeMessage}
+          handleOnSubmitMessage={handleOnSubmitMessage}/>
       </div>
     );
   }
 }
 
-export default App;
+export default socketConnect(App);
