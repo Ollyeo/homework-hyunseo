@@ -5,53 +5,71 @@ import {
 import './App.css';
 
 import { SocketProvider } from 'socket.io-react';
+import { socketConnect } from 'socket.io-react'
 import io from 'socket.io';
 
 class App extends Component {
+  
   socket =  io.connect();
   
   state = {
-    messages : [ ],
-    users : [ ],
-    name : '',
-    text : '',
+    messages: [ ],
+    users: [ ],
+    name: '',
+    text: '',
   };
   
-  socket.on('connect', () => {
-    this.setName();
-  });
-  
-  socket.on('message', function (msg) {
-    messages.push(msg);
-    socket.on('connect', function () {
-      setName();
+  constructor(props){
+    super(props);
+      
+    this.socket.on('connect', () => {
+      this.setName();
     });
-  });
   
-  socket.on('message', function (msg) {
-    messages.push(msg);
-  });
+    this.socket.on('message', function (msg) {
+      const { messages } = this.state
+      
+      this.setState({
+        messages : messages.concat(msg)
+      })
+
+    });
+    
+    this.socket.on('message', function (msg) {
+      const { messages } = this.state
+      this.setState({
+        messages : messages.concat(msg)
+      })
+    });
+    
+    this.socket.on('user', function (names) {
+      this.setState({
+        users: names
+      });
+      // 수정
+      $('#localusers').append($('<li class="collection-item">' + names + '</li>'))
+    });
   
-  socket.on('user', function (names) {
-    roster = names;
-    // 수정
-    $('#localusers').append($('<li class="collection-item">' + names + '</li>'))
-  });
-  
-  function send() {
-    console.log('Sending message:', $scope.text);
-    socket.emit('message', $scope.text);
-    text = '';
+  }
+
+  send = () => {
+    const { text } = this.state
+    
+    console.log('Sending message:', text);
+    
+    this.socket.emit('message', text);
+    this.text = '';
   };
   
-  function setName() {
-    socket.emit('identify', $scope.name);
+  setName = () => {
+    const { name } = this.state
+    this.socket.emit('identify', name);
   };
 
   render() {
     return (
       <div className="App">
-      <SocketProvider socket={socket}>
+      <SocketProvider socket={this.socket}>
       
       </SocketProvider>
       </div>
