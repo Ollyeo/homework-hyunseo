@@ -1,29 +1,27 @@
 import React, { Component } from 'react';
 import {
   Header,
-  UserList,
 } from './components'
-import { ChatContainer } from './containers'
-import io from 'socket.io-client';
+import { 
+  ChatContainer,
+  UserContainer,
+} from './containers';
 
 class App extends Component {
  
   constructor(props){
     super();
     
-    const socket = io();
-    
     this.state = {  
       messages: [ ],
       users: [ ],
       name: '',
       text: '',
-      socket: socket
     }
   }
 
   componentDidMount(){
-    
+    socket.on('init', () => {return;});
   }
   
   sendText = () => {

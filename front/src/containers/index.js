@@ -1,5 +1,5 @@
 import ChatContainer from './ChatContainer/ChatContainer.js';
-import UserContainer from './UserContianer/UserContianer.js';
+import UserContainer from './UserContainer/UserContainer.js';
 
 export {
     ChatContainer,
