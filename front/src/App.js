@@ -1,21 +1,17 @@
-import { socketConnect } from 'socket.io-react';
-
 import React, { Component } from 'react';
 import {
   Header,
-  UserList
+  UserList,
 } from './components'
-import {
-  ChatContainer,
-} from './components'
-import './App.css';
+import { ChatContainer } from './containers'
+import io from 'socket.io-client';
 
 class App extends Component {
  
   constructor(props){
     super();
     
-    const { socket } = this.props;
+    const socket = io();
     
     this.state = {  
       messages: [ ],
@@ -36,7 +32,9 @@ class App extends Component {
     console.log('Sending message:', text);
     
     socket.emit('message', text);
-    text = '';
+    this.setState({
+      text:''
+    })
   };
   
   setName = () => {
@@ -83,7 +81,10 @@ class App extends Component {
     
     return (
       <div>
-        <Head/>
+        <Header/>
+        <UserContainer
+          users={users}
+        />
         <ChatContainer 
           socket={socket}
           handleOnChangeName={handleOnChangeMessage}
@@ -95,4 +96,4 @@ class App extends Component {
   }
 }
 
-export default socketConnect(App);
+export default App;
