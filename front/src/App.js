@@ -7,22 +7,48 @@ import {
   UserContainer,
 } from './containers';
 
+import io from 'socket.io-client';
+
 class App extends Component {
- 
-  constructor(props){
-    super();
+  
+  socket = io('http://homework-hyunseo-hyunseo.c9users.io:8081');
     
-    this.state = {  
-      messages: [ ],
-      users: [ ],
-      name: '',
-      text: '',
-    }
+  state = {  
+    messages: [ ],
+    users: [ ],
+    name: '',
+    text: '',
+    socket: this.socket
   }
 
   componentDidMount(){
-    socket.on('init', () => {return;});
+    const { socket, messages, users, name } = this.state;
+    
+    // 내가 접속
+    socket.on('connect', () => {
+      socket.emit('identify', name);
+    });
+    // message 받음
+    socket.on('message', (data) => {
+      this.setState({
+        messages: messages.concat([data])
+      })
+    });
+    // 누군가 접속
+    socket.on('user', (data) => {
+      this.setState({
+        users: users.concat([data])
+      })
+    });
   }
+  
+  /*
+  componentDidMount() {
+    const { socket } = this.state;
+    
+    socket.emit('user:left');
+  }
+  */
   
   sendText = () => {
     const { text, socket } = this.state
@@ -33,12 +59,6 @@ class App extends Component {
     this.setState({
       text:''
     })
-  };
-  
-  setName = () => {
-    const { name, socket } = this.state
-    
-    socket.emit('identify', name);
   };
   
   handleOnChangeName(ev){
@@ -70,7 +90,7 @@ class App extends Component {
   }
 
   render() {
-    const { messages, users, name, text, socket } = this.state;
+    const { users, text, messages } = this.state;
     
     const { handleOnChangeName,
             handleOnIdentify,
@@ -83,10 +103,9 @@ class App extends Component {
         <UserContainer
           users={users}
         />
-        <ChatContainer 
-          socket={socket}
-          handleOnChangeName={handleOnChangeMessage}
-          handleOnIdentify={handleOnIdentify}
+        <ChatContainer
+          messages={messages}
+          input={text}
           handleOnChangeMessage={handleOnChangeMessage}
           handleOnSubmitMessage={handleOnSubmitMessage}/>
       </div>

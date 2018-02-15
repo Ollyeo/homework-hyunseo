@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'antd';
 
-const ChatWrapper = ({value, socket, onChange, onKeyPress, onSubmit}) => {
+const ChatWrapper = ({value, onChange, onKeyPress, onSubmit}) => {
     return (
         <div className="form">
             <Button type="primary" onChange={onChange} onKeyPress={onKeyPress} >Button</Button>

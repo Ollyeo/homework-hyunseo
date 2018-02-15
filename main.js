@@ -8,6 +8,21 @@ var ROOT_DIR = 'client';
 var messages = [];
 var users = [];
 var server = http.createServer(function(req, res){
+    /*
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    */
+
     if(req.url == '/')
         req.url = '/index.html';
         
@@ -22,13 +37,17 @@ var server = http.createServer(function(req, res){
             return;
         }
         
-        res.writeHead(200);
+        res.writeHead(200,{
+             'Access-Control-Allow-Origin' : '*'
+        });
         res.end(data);
     });
 })
 
+// TODO :: io 에 origins: '*:*' 옵션 추가
 var socketio = require('socket.io');
 var io = socketio.listen(server);
+io.origins(['*']);
 
 io.on('connection', (socket) => {
     // 처음 들어왔을 때

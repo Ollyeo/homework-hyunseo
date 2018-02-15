@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ChatBoard = ({texts}) => {
+const ChatBoard = ({messages}) => {
     // append text
-    const chatlist = texts.map(
+    const chatlist = messages.map(
         ({name, text}) => (
             <table class="table table-striped table-bordered">
                 <thead>

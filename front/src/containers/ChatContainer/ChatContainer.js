@@ -7,27 +7,22 @@ import {
 
 class ChatContainer extends Component {
     
-    constructor(props){
-        super();
-        
-        const { handleOnChangeName,
-                handleOnIdentify,
+    render() {
+        const { messages,
+                input,
                 handleOnChangeMessage,
                 handleOnSubmitMessage
         } = this.props;
         
-        
-        this.state = {
-                
-        };
-    }
-    
-    render() {
-        
         return(
             <div className="chat-container">
-                <ChatBoard/>
-                <ChatWrapper/>
+                <ChatBoard messages={messages}/>
+                <ChatWrapper
+                    value={input}
+                    onChange={handleOnChangeMessage}
+                    onKeyPress={handleOnSubmitMessage}
+                    onSubmit={handleOnSubmitMessage}
+                />
             </div>
         );
     }
