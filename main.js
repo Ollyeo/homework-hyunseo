@@ -4,7 +4,7 @@ var url = require('url');
 
 var async = require('async');
 
-var ROOT_DIR = 'client';
+var ROOT_DIR = 'front/build';
 var messages = [];
 var users = [];
 var server = http.createServer(function(req, res){
@@ -45,9 +45,11 @@ var server = http.createServer(function(req, res){
 })
 
 // TODO :: io 에 origins: '*:*' 옵션 추가
-var socketio = require('socket.io');
-var io = socketio.listen(server);
-io.origins(['*']);
+var socket = require('socket.io');
+var io = socket.listen(server);
+//io.origins(['*']);
+io.set('origins', ["*"]);
+//io.origins(['*']);
 
 io.on('connection', (socket) => {
     // 처음 들어왔을 때

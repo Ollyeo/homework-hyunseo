@@ -40,6 +40,9 @@ class App extends Component {
         users: users.concat([data])
       })
     });
+    
+    this.sendText()
+    console.log("send")
   }
   
   /*
@@ -61,26 +64,26 @@ class App extends Component {
     })
   };
   
-  handleOnChangeName(ev){
+  handleOnChangeName = (ev) =>{
     this.setState({
       name: ev.target.value
     })
   }
   
-  handleOnIdentify(ev){
+  handleOnIdentify = (ev) => {
     this.setName();
     this.setState({
       name: ''
     })
   }
   
-  handleOnChangeMessage(ev){
+  handleOnChangeMessage = (ev) => {
     this.setState({
       text: ev.target.value
     })
   }
   
-  handleOnSubmitMessage(ev){
+  handleOnSubmitMessage = (ev) => {
     ev.preventDefault()
     this.sendText();
     
