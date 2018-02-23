@@ -11,8 +11,8 @@ import io from 'socket.io-client';
 
 class App extends Component {
   
-  socket = io('http://homework-hyunseo-hyunseo.c9users.io:8081');
-    
+  socket = io()
+  
   state = {  
     messages: [ ],
     users: [ ],
